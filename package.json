@@ -1,0 +1,23 @@
+{
+  "name": "playwright-template",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test-ui": "playwright test CertGemas --ui "
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@faker-js/faker": "^9.1.0",
+    "@playwright/test": "^1.48.1",
+    "@types/date-fns": "^2.6.3",
+    "@types/node": "^20.10.4",
+    "ortoni-report": "^2.0.9"
+  },
+  "dependencies": {
+    "date-fns": "^4.1.0",
+    "dotenv": "^16.3.1"
+  }
+}
