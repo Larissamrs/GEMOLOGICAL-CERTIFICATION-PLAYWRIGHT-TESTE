@@ -49,5 +49,5 @@ Para abrir ortoni-report, utilize o comando:
 ```sh
 npx ortoni-report show-report
 ```
-## Contato
-Para mais informações, entre em contato com Larissa Maria **(mailto:larissamrs99@gmail.com)
+
+
