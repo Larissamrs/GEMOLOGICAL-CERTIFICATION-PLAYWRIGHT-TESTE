@@ -7,6 +7,7 @@ export class CertificadosPage {
   private readonly criarCertificadoButton: Locator;
   private readonly certificadoCard: Locator;
   private readonly salvarCertificadoButton: Locator;
+  private readonly searchQueryInput: Locator;
   
   // Campos do formulário de certificado
   private readonly gemNameInput: Locator;
@@ -34,8 +35,9 @@ export class CertificadosPage {
     
     // Botões principais
     this.criarCertificadoButton = page.getByText('Criar Certificado');
-    this.certificadoCard = page.locator('div.gemologo-card');
+    this.certificadoCard = page.locator('.gemologo-card');
     this.salvarCertificadoButton = page.getByText('Salvar Certificado');
+    this.searchQueryInput = page.locator('input#searchQuery');
     
     // Campos do formulário
     this.gemNameInput = page.locator('#gemName');
@@ -113,8 +115,9 @@ export class CertificadosPage {
 
   // Verificações
   async verificarCertificadosCarregados(): Promise<void> {
-    const primeiroCertificado = this.certificadoCard.first();
-    await expect(primeiroCertificado).toBeVisible();
+  const primeiroCertificado = this.certificadoCard.first();
+  await primeiroCertificado.waitFor({ state: 'visible', timeout: 10000 });
+  await expect(primeiroCertificado).toBeVisible();
   }
 
   async verificarQuantidadeCertificados(quantidade: number): Promise<void> {
@@ -187,6 +190,79 @@ export class CertificadosPage {
 
   get salvarCertificadoBtn(): Locator {
     return this.salvarCertificadoButton;
+  }
+
+  get searchInput(): Locator {
+    return this.searchQueryInput;
+  }
+
+  // Consulta de certificado por ID
+  async navegarParaCertificadoPorId(id: string): Promise<void> {
+    await this.page.goto(`${this.BASE_URL}certificate?id=${id}`);
+    await this.aguardarCarregamento();
+  }
+
+  async verificarCertificadoPorIdNaUrl(id: string): Promise<void> {
+    await expect(this.page).toHaveURL(new RegExp(`/certificate\\?id=${id}([&?#].*)?$`));
+  }
+
+  async verificarCampoCertificadoPorId(campoLocator: Locator, valorEsperado: string): Promise<void> {
+    await this.aguardarElementoVisivel(campoLocator);
+    await expect(campoLocator).toHaveValue(valorEsperado);
+  }
+
+  // Métodos de busca por nome do certificado
+  async pesquisarCertificadoPorNome(nomeCertificado: string): Promise<void> {
+    await this.aguardarElementoVisivel(this.searchQueryInput);
+    await this.searchQueryInput.click();
+    await this.searchQueryInput.clear();
+    await this.searchQueryInput.fill(nomeCertificado);
+    await this.page.keyboard.press('Enter');
+    await this.aguardarCarregamento();
+  }
+
+  async verificarCardCertificadoExibido(nomeCertificado: string): Promise<void> {
+    const cardCertificado = this.page.locator('.gemologo-card').filter({ hasText: nomeCertificado });
+    await this.aguardarElementoVisivel(cardCertificado);
+    await expect(cardCertificado).toBeVisible();
+  }
+
+  async clicarCertificadoPorNome(nomeCertificado: string): Promise<void> {
+    const cardCertificado = this.page.locator('.gemologo-card').filter({ hasText: nomeCertificado });
+    await this.aguardarElementoVisivel(cardCertificado);
+    await cardCertificado.click();
+  }
+
+  async verificarCardCertificadoComDetalhes(nomeCertificado: string, data: string, informacoes: string): Promise<void> {
+    const cardCertificado = this.page.locator('.gemologo-card').filter({ hasText: nomeCertificado });
+    await this.aguardarElementoVisivel(cardCertificado);
+    
+    // Verificar o título do certificado
+    const tituloCard = cardCertificado.locator('h3');
+    await expect(tituloCard).toHaveText(nomeCertificado);
+    
+    // Verificar data se fornecida
+    if (data) {
+      const dataElement = cardCertificado.locator('.info-item').filter({ hasText: 'Dados:' }).locator('span');
+      await expect(dataElement).toHaveText(data);
+    }
+    
+    // Verificar informações se fornecidas
+    if (informacoes) {
+      const infoElement = cardCertificado.locator('.info-item').filter({ hasText: 'Informações:' }).locator('span');
+      await expect(infoElement).toHaveText(informacoes);
+    }
+  }
+
+  async verificarNenhumResultadoEncontrado(): Promise<void> {
+    const cardsCertificados = this.page.locator('.gemologo-card');
+    await expect(cardsCertificados).toHaveCount(0);
+  }
+
+  async limparCampoPesquisa(): Promise<void> {
+    await this.aguardarElementoVisivel(this.searchQueryInput);
+    await this.searchQueryInput.click();
+    await this.searchQueryInput.clear();
   }
 }
 
