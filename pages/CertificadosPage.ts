@@ -136,6 +136,10 @@ export class CertificadosPage {
     await expect(this.page).toHaveURL(this.CERTIFICATE_URL_PATTERN);
   }
 
+   async verificarURLCertificateById(id): Promise<void> {
+    await expect(this.page).toHaveURL(new RegExp(`/certificate\\?id=${id}([&?#].*)?$`));
+  }
+
   async verificarURLWelcome(): Promise<void> {
     await expect(this.page).toHaveURL(/\/welcome(\?.*)?$/);
   }
