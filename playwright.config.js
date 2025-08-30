@@ -16,9 +16,9 @@ const reportConfig = {
 export default defineConfig({
   reporter: [["ortoni-report", reportConfig], ["list"]],
   testDir: './tests',
-  timeout: 1 * 60 * 3000, /* Tempo máximo que um teste pode rodar. */
+  timeout: 1 * 10* 3000, /* Tempo máximo que um teste pode rodar. */
   expect: {
-    timeout: 60 * 1000, /* Tempo máximo que o expect() deve esperar para a condição ser atendida. */
+    timeout: 10 * 1000, /* Tempo máximo que o expect() deve esperar para a condição ser atendida. */
   },
   fullyParallel: true,/* Rodar testes em paralelo */
   forbidOnly: !!process.env.CI, /* Falhar a build no CI se 'test.only' estiver presente no código */

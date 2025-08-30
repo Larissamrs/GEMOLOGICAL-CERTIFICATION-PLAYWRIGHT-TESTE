@@ -74,17 +74,17 @@ test('CA04 - Consulta certificado por ID válido', async ({ page }) => {
   await certificadosPage.navegarParaWelcome();
   
   // Pesquisar pelo certificado específico usando o campo de busca
-  const nomeCertificado = 'wHuxPieqhm';
+  const nomeCertificado = 'J3X0Z4Uizu';
   await certificadosPage.pesquisarCertificadoPorNome(nomeCertificado);
   
-  // Verificar se o certificado wHuxPieqhm aparece no card
+  // Verificar se o certificado J3X0Z4Uizu aparece no card
   await certificadosPage.verificarCardCertificadoExibido(nomeCertificado);
   
-  // Clicar no certificado wHuxPieqhm
+  // Clicar no certificado J3X0Z4Uizu
   await certificadosPage.clicarCertificadoPorNome(nomeCertificado);
   
   // Verificar se está na URL correta
-  const certificadoId = '1';
+  const certificadoId = '52';
   await certificadosPage.verificarCertificadoPorIdNaUrl(certificadoId);
   
   // Aguardar carregamento dos dados
@@ -175,7 +175,7 @@ test('CA08 - Pesquisar certificado por nome específico', async ({ page }) => {
   await certificadosPage.navegarParaWelcome();
   
   // Nome do certificado para pesquisar
-  const nomeCertificado = 'wHuxPieqhm';
+  const nomeCertificado = 'J3X0Z4Uizu';
   
   // Realizar a pesquisa
   await certificadosPage.pesquisarCertificadoPorNome(nomeCertificado);
@@ -234,7 +234,7 @@ test('CA11 - Pesquisar e limpar campo de pesquisa', async ({ page }) => {
   const countInicial = await certificadosPage.certificadoCards.count();
   
   // Realizar pesquisa específica
-  const nomeCertificado = 'wHuxPieqhm';
+  const nomeCertificado = 'J3X0Z4Uizu';
   await certificadosPage.pesquisarCertificadoPorNome(nomeCertificado);
   
   // Verificar que apenas o certificado pesquisado é exibido
@@ -255,7 +255,7 @@ test('CA12 - Verificar busca case-insensitive', async ({ page }) => {
   const certificadosPage = new CertificadosPage(page);
   await certificadosPage.navegarParaWelcome();
   
-  const nomeCertificado = 'wHuxPieqhm';
+  const nomeCertificado = 'J3X0Z4Uizu';
   
   // Testar busca com letras minúsculas
   await certificadosPage.pesquisarCertificadoPorNome(nomeCertificado.toLowerCase());
